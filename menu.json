@@ -19,7 +19,7 @@
       "tags": [
         "Popüler"
       ],
-      "image": "./images/b1.svg"
+      "image": "https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=900&q=80"
     },
     {
       "id": "b2",
@@ -30,7 +30,7 @@
       "tags": [
         "Çok satan"
       ],
-      "image": "./images/b2.svg"
+      "image": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=80"
     },
     {
       "id": "b3",
@@ -41,7 +41,7 @@
       "tags": [
         "Doyurucu"
       ],
-      "image": "./images/b3.svg"
+      "image": "https://images.unsplash.com/photo-1606755962773-0d6c9f7a1c45?auto=format&fit=crop&w=900&q=80"
     },
     {
       "id": "b4",
@@ -52,7 +52,7 @@
       "tags": [
         "Acılı"
       ],
-      "image": "./images/b4.svg"
+      "image": "https://images.unsplash.com/photo-1594007654729-407eedc4be65?auto=format&fit=crop&w=900&q=80"
     },
     {
       "id": "g1",
@@ -63,7 +63,7 @@
       "tags": [
         "Izgara"
       ],
-      "image": "./images/g1.svg"
+      "image": "https://images.unsplash.com/photo-1604908177522-3d6c1b91a3c5?auto=format&fit=crop&w=900&q=80"
     },
     {
       "id": "g2",
@@ -74,7 +74,7 @@
       "tags": [
         "Izgara"
       ],
-      "image": "./images/g2.svg"
+      "image": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=900&q=80"
     },
     {
       "id": "g3",
@@ -85,7 +85,7 @@
       "tags": [
         "Premium"
       ],
-      "image": "./images/g3.svg"
+      "image": "https://images.unsplash.com/photo-1600891964092-4316c288032e?auto=format&fit=crop&w=900&q=80"
     },
     {
       "id": "w1",
@@ -96,7 +96,7 @@
       "tags": [
         "Acılı"
       ],
-      "image": "./images/w1.svg"
+      "image": "https://images.unsplash.com/photo-1608039829572-78524f79c4c7?auto=format&fit=crop&w=900&q=80"
     },
     {
       "id": "w2",
@@ -107,7 +107,7 @@
       "tags": [
         "Soslu"
       ],
-      "image": "./images/w2.svg"
+      "image": "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=900&q=80"
     },
     {
       "id": "s1",
@@ -118,7 +118,7 @@
       "tags": [
         "Deniz"
       ],
-      "image": "./images/s1.svg"
+      "image": "https://images.unsplash.com/photo-1625943553852-781c6dd46faa?auto=format&fit=crop&w=900&q=80"
     },
     {
       "id": "sd1",
@@ -129,7 +129,7 @@
       "tags": [
         "Yan"
       ],
-      "image": "./images/sd1.svg"
+      "image": "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=900&q=80"
     },
     {
       "id": "sd2",
@@ -140,7 +140,7 @@
       "tags": [
         "Yan"
       ],
-      "image": "./images/sd2.svg"
+      "image": "https://images.unsplash.com/photo-1625944525114-8b8f7c1a7109?auto=format&fit=crop&w=900&q=80"
     }
   ]
 }
