@@ -1,17 +1,19 @@
 const state = {
   menu: null,
   itemsById: new Map(),
-  cart: new Map(),
+  cart: new Map(), // id -> qty
   filter: { q: "", cat: "Tümü" },
 };
 
 const el = (id) => document.getElementById(id);
 
-function fmtPrice(n, currency){ return `${Number(n).toFixed(0)} ${currency}`; }
+function fmtPrice(n, currency){
+  return `${n.toFixed(0)} ${currency}`;
+}
 
 function loadCart(){
   try{
-    const raw = localStorage.getItem("demo_cart_v2");
+    const raw = localStorage.getItem("demo_cart_v1");
     if(!raw) return;
     const obj = JSON.parse(raw);
     state.cart = new Map(Object.entries(obj).map(([k,v])=>[k, Number(v)||0]).filter(([,v])=>v>0));
@@ -21,7 +23,7 @@ function loadCart(){
 function saveCart(){
   const obj = {};
   for(const [k,v] of state.cart.entries()) obj[k]=v;
-  localStorage.setItem("demo_cart_v2", JSON.stringify(obj));
+  localStorage.setItem("demo_cart_v1", JSON.stringify(obj));
 }
 
 function setQty(id, qty){
@@ -34,6 +36,13 @@ function setQty(id, qty){
 function inc(id){ setQty(id, (state.cart.get(id)||0)+1); }
 function dec(id){ setQty(id, (state.cart.get(id)||0)-1); }
 
+function buildCategories(items){
+  const cats = ["Tümü", ...Array.from(new Set(items.map(x=>x.category))).sort((a,b)=>a.localeCompare(b,'tr'))];
+  const sel = el("category");
+  sel.innerHTML = cats.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join("");
+  sel.value = state.filter.cat;
+}
+
 function escapeHtml(s){
   return String(s)
     .replaceAll("&","&amp;")
@@ -41,13 +50,6 @@ function escapeHtml(s){
     .replaceAll(">","&gt;")
     .replaceAll('"',"&quot;")
     .replaceAll("'","&#039;");
-}
-
-function buildCategories(items){
-  const cats = ["Tümü", ...Array.from(new Set(items.map(x=>x.category))).sort((a,b)=>a.localeCompare(b,'tr'))];
-  const sel = el("category");
-  sel.innerHTML = cats.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join("");
-  sel.value = state.filter.cat;
 }
 
 function filteredItems(){
@@ -61,23 +63,16 @@ function filteredItems(){
   });
 }
 
-function renderHeaderInfo(){
-  el("restName").textContent = state.menu.restaurantName;
-  el("hours").textContent = state.menu.hours || "";
-  el("areas").textContent = (state.menu.deliveryAreas || []).join(", ");
-  el("minOrder").textContent = fmtPrice(state.menu.minOrder || 0, state.menu.currency);
-}
-
 function renderMenu(){
   const items = filteredItems();
   el("menuCount").textContent = `${items.length} ürün`;
-  el("menuCards").innerHTML = items.map(it => {
+  const cards = items.map(it => {
     const qty = state.cart.get(it.id) || 0;
     const tags = (it.tags||[]).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join("");
-    const img = it.image ? `<div class="thumb"><img src="${escapeHtml(it.image)}" alt="${escapeHtml(it.name)}" loading="lazy" /></div>` : "";
     return `
       <article class="card">
-        ${img}
+        ${it.image ? `<div class="thumb"><img src="${it.image}" alt="${it.name}" loading="lazy" /></div>` : ``}
+
         <div class="top">
           <div>
             <h3>${escapeHtml(it.name)}</h3>
@@ -96,7 +91,8 @@ function renderMenu(){
         </div>
       </article>
     `;
-  }).join("") || `<div class="card"><p>Filtreye uygun ürün yok.</p></div>`;
+  }).join("");
+  el("menuCards").innerHTML = cards || `<div class="card"><p>Filtreye uygun ürün yok.</p></div>`;
 }
 
 function cartLines(){
@@ -105,7 +101,7 @@ function cartLines(){
   for(const [id,qty] of state.cart.entries()){
     const it = state.itemsById.get(id);
     if(!it) continue;
-    const line = Number(it.price) * qty;
+    const line = it.price * qty;
     subtotal += line;
     lines.push({id, qty, name: it.name, line, price: it.price});
   }
@@ -117,17 +113,17 @@ function renderCart(){
   const {lines, subtotal} = cartLines();
   const cur = state.menu.currency;
   el("subtotal").textContent = fmtPrice(subtotal, cur);
+  el("minOrder").textContent = fmtPrice(state.menu.minOrder, cur);
 
-  const min = Number(state.menu.minOrder || 0);
-  const minOk = subtotal >= min;
+  const minOk = subtotal >= state.menu.minOrder;
   el("minStatus").innerHTML = minOk
-    ? `<span>Minimum sepet: <strong style="color:var(--ok)">tamam</strong></span>`
-    : `<span>Minimum için: <strong style="color:var(--warn)">${fmtPrice(min - subtotal, cur)}</strong></span>`;
+    ? `<span class="note"><b class="ok">Minimum sepet tamam.</b></span>`
+    : `<span class="note"><b class="warn">Minimum sepet için</b> ${fmtPrice(state.menu.minOrder - subtotal, cur)} daha ekleyin.</span>`;
 
   el("cartItems").innerHTML = lines.length ? lines.map(x=>`
     <div class="cart-row">
-      <div>
-        <div><strong>${escapeHtml(x.name)}</strong></div>
+      <div class="meta">
+        <div class="line">${escapeHtml(x.name)}</div>
         <small>${x.qty} × ${fmtPrice(x.price, cur)}</small>
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
@@ -141,6 +137,7 @@ function renderCart(){
   `).join("") : `<div class="note">Sepet boş. Menüden ürün ekleyin.</div>`;
 
   el("sendBtn").disabled = lines.length === 0 || !minOk;
+  el("sendBtn").classList.toggle("primary", lines.length && minOk);
 }
 
 function buildWhatsappMessage(){
@@ -153,23 +150,36 @@ function buildWhatsappMessage(){
   const cur = state.menu.currency;
 
   const parts = [];
-  parts.push(`*${state.menu.restaurantName}* - Paket Servis Siparişi`, ``);
+  parts.push(`*${state.menu.restaurantName}* - Paket Servis Siparişi`);
+  parts.push(``);
   if(name) parts.push(`Müşteri: ${name}`);
   if(phone) parts.push(`Tel: ${phone}`);
   if(address) parts.push(`Adres: ${address}`);
-  parts.push(``, `*Sipariş:*`);
+  parts.push(``);
+  parts.push(`*Sipariş:*`);
   for(const x of lines){
     parts.push(`- ${x.qty} × ${x.name} = ${fmtPrice(x.line, cur)}`);
   }
-  parts.push(``, `Ara Toplam: ${fmtPrice(subtotal, cur)}`, `Ödeme: Kapıda ödeme`);
-  if(note) parts.push(``, `Not: ${note}`);
-  parts.push(``, `(Bu mesaj site üzerinden otomatik hazırlanmıştır.)`);
+  parts.push(``);
+  parts.push(`Ara Toplam: ${fmtPrice(subtotal, cur)}`);
+  parts.push(`Ödeme: Kapıda ödeme`);
+  if(note) { parts.push(``); parts.push(`Not: ${note}`); }
+  parts.push(``); parts.push(`(Bu mesaj site üzerinden otomatik hazırlanmıştır.)`);
+
   return parts.join("\n");
 }
 
 function whatsappLink(){
-  const raw = String(state.menu.whatsappE164 || "").replace(/\D/g, "");
-  return `https://wa.me/${raw}?text=${encodeURIComponent(buildWhatsappMessage())}`;
+  const raw = state.menu.whatsappE164.replace(/\D/g, "");
+  const msg = buildWhatsappMessage();
+  const encoded = encodeURIComponent(msg);
+  return `https://wa.me/${raw}?text=${encoded}`;
+}
+
+function renderHeaderInfo(){
+  el("restName").textContent = state.menu.restaurantName;
+  el("hours").textContent = state.menu.hours;
+  el("areas").textContent = state.menu.deliveryAreas.join(", ");
 }
 
 function bindUI(){
@@ -182,11 +192,13 @@ function bindUI(){
     renderMenu();
   });
   el("clearCart").addEventListener("click", ()=>{
-    state.cart.clear(); saveCart(); renderAll();
+    state.cart.clear();
+    saveCart();
+    renderAll();
   });
   el("sendBtn").addEventListener("click", ()=>{
     const {subtotal} = cartLines();
-    if(subtotal < Number(state.menu.minOrder||0)) return;
+    if(subtotal < state.menu.minOrder) return;
     window.open(whatsappLink(), "_blank");
   });
 }
