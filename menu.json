@@ -18,7 +18,8 @@
       "price": 295,
       "tags": [
         "Popüler"
-      ]
+      ],
+      "image": "./images/b1.svg"
     },
     {
       "id": "b2",
@@ -28,7 +29,8 @@
       "price": 315,
       "tags": [
         "Çok satan"
-      ]
+      ],
+      "image": "./images/b2.svg"
     },
     {
       "id": "b3",
@@ -38,7 +40,8 @@
       "price": 345,
       "tags": [
         "Doyurucu"
-      ]
+      ],
+      "image": "./images/b3.svg"
     },
     {
       "id": "b4",
@@ -48,7 +51,8 @@
       "price": 335,
       "tags": [
         "Acılı"
-      ]
+      ],
+      "image": "./images/b4.svg"
     },
     {
       "id": "g1",
@@ -58,7 +62,8 @@
       "price": 520,
       "tags": [
         "Izgara"
-      ]
+      ],
+      "image": "./images/g1.svg"
     },
     {
       "id": "g2",
@@ -68,7 +73,8 @@
       "price": 385,
       "tags": [
         "Izgara"
-      ]
+      ],
+      "image": "./images/g2.svg"
     },
     {
       "id": "g3",
@@ -78,7 +84,8 @@
       "price": 610,
       "tags": [
         "Premium"
-      ]
+      ],
+      "image": "./images/g3.svg"
     },
     {
       "id": "w1",
@@ -88,7 +95,8 @@
       "price": 360,
       "tags": [
         "Acılı"
-      ]
+      ],
+      "image": "./images/w1.svg"
     },
     {
       "id": "w2",
@@ -98,7 +106,8 @@
       "price": 360,
       "tags": [
         "Soslu"
-      ]
+      ],
+      "image": "./images/w2.svg"
     },
     {
       "id": "s1",
@@ -108,7 +117,8 @@
       "price": 540,
       "tags": [
         "Deniz"
-      ]
+      ],
+      "image": "./images/s1.svg"
     },
     {
       "id": "sd1",
@@ -118,7 +128,8 @@
       "price": 110,
       "tags": [
         "Yan"
-      ]
+      ],
+      "image": "./images/sd1.svg"
     },
     {
       "id": "sd2",
@@ -128,7 +139,8 @@
       "price": 95,
       "tags": [
         "Yan"
-      ]
+      ],
+      "image": "./images/sd2.svg"
     }
   ]
 }
