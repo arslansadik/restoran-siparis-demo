@@ -1,13 +1,76 @@
 <!doctype html>
 <html lang="tr">
 <head>
-<meta charset="utf-8">
-<title>Restoran Sipariş Demo</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Demo Paket Servis Sipariş</title>
+  <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-<h1 id="title"></h1>
-<div id="menu" class="grid"></div>
-<script src="app.js"></script>
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <h1 id="restName">Restoran</h1>
+        <small><span id="hours"></span> • Bölge: <span id="areas"></span></small>
+      </div>
+      <div class="controls">
+        <span class="note">Ödeme: <b>Kapıda</b></span>
+        <span class="note">Minimum: <b id="minOrder"></b></span>
+        <input id="search" type="search" placeholder="Ürün ara (örn. burger, kanat)" autocomplete="off" />
+        <select id="category" aria-label="Kategori"></select>
+        <button id="clearCart" class="btn" type="button">Sepeti Temizle</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="grid">
+      <section>
+        <div class="row" style="margin-bottom:10px;">
+          <strong style="color:var(--text)">Menü</strong>
+          <span id="menuCount">0 ürün</span>
+        </div>
+        <div id="menuCards" class="cards"></div>
+        <div class="note" style="margin-top:14px;">Not: Bu demo sitede sipariş WhatsApp üzerinden iletilir. Kartlı ödeme yoktur.</div>
+      </section>
+
+      <aside class="panel">
+        <h2>Sepet ve Teslimat</h2>
+        <div id="cartItems" class="cart-items"></div>
+
+        <div class="totals">
+          <div class="row"><span>Ara Toplam</span><strong id="subtotal">0 ₺</strong></div>
+          <div id="minStatus" class="row"></div>
+        </div>
+
+        <hr />
+
+        <div class="note"><b>Bilgiler</b></div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:10px;">
+          <div>
+            <label for="custName">Ad Soyad</label>
+            <input id="custName" placeholder="Örn. Sadık Arslan" />
+          </div>
+          <div>
+            <label for="custPhone">Telefon</label>
+            <input id="custPhone" placeholder="05xx xxx xx xx" />
+          </div>
+          <div>
+            <label for="custAddress">Adres</label>
+            <textarea id="custAddress" placeholder="Mahalle, cadde, sokak, bina no, daire no"></textarea>
+          </div>
+          <div>
+            <label for="custNote">Not</label>
+            <textarea id="custNote" placeholder="Kapı tarifi, acı/acı değil, sos, vb."></textarea>
+          </div>
+
+          <button id="sendBtn" class="btn ok" type="button" disabled>WhatsApp ile Siparişi Gönder</button>
+          <div class="note">WhatsApp: <b>+90 505 372 0966</b></div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <script src="./app.js"></script>
 </body>
 </html>
