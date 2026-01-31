@@ -2,7 +2,7 @@ const state = {
   menu: null,
   itemsById: new Map(),
   cart: new Map(), // id -> qty
-  filter: { q: "", cat: "Tümü" },
+  filter: { q: "", cat: "xTümü" },
 };
 
 const el = (id) => document.getElementById(id);
